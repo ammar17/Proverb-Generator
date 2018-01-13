@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ProverbView from './ProverbView.js';
-import logo from './logo.svg';
+import logo from './colberthead.png';
 import './App.css';
 
 class App extends Component {
