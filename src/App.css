@@ -26,3 +26,26 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+#proverb {
+  margin: 20px;
+}
+
+#first, #second {
+  border-radius: 3px;
+  padding: 5px;
+}
+
+#first {
+  background-color: #D9001E;
+  color: white;
+}
+
+#second {
+  background-color: #4FB300;
+  color: black;
+}
+
+#new {
+  margin-top: 25px;
+}
