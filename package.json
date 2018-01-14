@@ -2,7 +2,7 @@
   "name": "proverb",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://www.baviereteam.net/proverb/"
+  "homepage": "http://www.baviereteam.net/proverb/",
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
