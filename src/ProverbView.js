@@ -4,13 +4,13 @@ import ProverbProvider from './ProverbProvider.js';
 class ProverbView extends Component {
     constructor(props) {
         super(props);
-        this.proverb_provider = new ProverbProvider();
 
         this.state = {
             first: null,
             second: null
         };
 
+        this.proverb_provider = props.proverb_provider;
         this.anotherProverbButtonClick = this.anotherProverbButtonClick.bind(this);
     }
 
