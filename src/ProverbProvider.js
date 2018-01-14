@@ -37,16 +37,24 @@ class ProverbProvider {
             "Il ne faut pas jeter le bébé/avec l'eau du bain",
             "C'est au pied du mur/qu'on voit le maçon",
             "Parlons peu/mais parlons bien",
-            "Petit à petit/l'oiseau fait son nid"
+            "Petit à petit/l'oiseau fait son nid",
+            "La fleur en bouquet fane/et jamais ne renaît"
         ];
-
         this.first_parts = [];
         this.second_parts = [];
+        this.prepareProverbParts();
+
+        // Is localStorage available in this browser, or is this the 1900s ?
+        try {
+            localStorage.setItem('TEST_LOCAL_STORAGE', '1');
+            localStorage.removeItem('TEST_LOCAL_STORAGE');
+            this.use_local_storage = true;
+        } catch(e) {
+            this.use_local_storage = false;
+        }
 
         // Used for rating proverb combinations, so that stupid / not working ones can be dropped in the future.
         this.ratings = [];
-
-        this.prepareProverbParts();
     }
 
     prepareProverbParts() {
@@ -59,6 +67,26 @@ class ProverbProvider {
         }
     }
 
+    /**
+     * Compose un proverbe à partir de deux éléments.
+     * @param only_curated: si true, ne retourne pas les proverbes ayant un score négatif.
+     */
+    getProverb(only_curated) {
+        let score = (only_curated ? -1 : 0);
+
+        do {
+            var first = this.getFirstPart();
+            var second = this.getSecondPart();
+            score = this.getRating(first, second);
+        } while(score < 0);
+
+        return {
+            first: first,
+            second: second,
+            score: score
+        }
+    }
+
     getFirstPart() {
         let index = Math.floor(this.first_parts.length * Math.random());
         return this.first_parts[index];
@@ -67,6 +95,31 @@ class ProverbProvider {
     getSecondPart() {
         let index = Math.floor(this.second_parts.length * Math.random());
         return this.second_parts[index];
+    }
+
+    isLocalStorageAvailable() {
+        return this.use_local_storage;
+    }
+
+    getRating(first_part, second_part) {
+        if (this.use_local_storage) {
+            let key = 'like_' + first_part + '_' + second_part;
+            let val = localStorage.getItem(key);
+            if (val !== null) {
+                return val;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    setRating(first_part, second_part, rating) {
+        if (this.use_local_storage) {
+            let key = 'like_' + first_part + '_' + second_part;
+            localStorage.setItem(key, rating);
+        }
     }
 }
 

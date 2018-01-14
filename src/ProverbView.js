@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProverbProvider from './ProverbProvider.js';
+import ProverbRater from './ProverbRater.js';
 
 class ProverbView extends Component {
     constructor(props) {
@@ -12,29 +13,31 @@ class ProverbView extends Component {
 
         this.proverb_provider = props.proverb_provider;
         this.anotherProverbButtonClick = this.anotherProverbButtonClick.bind(this);
+        this.onNewProverb = this.props.onNewProverb;
     }
 
     anotherProverbButtonClick(e) {
-        console.log('Button clicked');
-        
-        let first = this.proverb_provider.getFirstPart();
-        let second = this.proverb_provider.getSecondPart();
-        console.log('Parts chosen:', first, second);
+        let proverb = this.proverb_provider.getProverb(true);
 
         this.setState({
-            first: first,
-            second: second
+            first: proverb.first,
+            second: proverb.second,
+            score: proverb.score,
         });
+
+        this.onNewProverb(e);
     }
 
     render() {
+        if (!this.proverb_provider.isLocalStorageAvailable()) {
+            return null;
+        }
+
         if (this.state.first == null && this.state.second == null) {
-            console.log('oh...');
             return (
                 <button onClick={this.anotherProverbButtonClick} id="new">C'est parti !</button>
             );
         } else {
-            console.log('ha !');
             return (
                 <div>
                     <div id="proverb">
@@ -45,6 +48,7 @@ class ProverbView extends Component {
                     </div>
 
                     <button onClick={this.anotherProverbButtonClick} id="new">Un autre !</button>
+                    <ProverbRater proverb_provider={this.proverb_provider} first={this.state.first} second={this.state.second} score={this.state.score} />
                 </div>
             );
         }
